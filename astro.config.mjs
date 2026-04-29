@@ -5,9 +5,12 @@ import tailwind from '@astrojs/tailwind';
 import react from '@astrojs/react';
 import sanity from '@sanity/astro';
 
+import cloudflare from "@astrojs/cloudflare";
+
 export default defineConfig({
   site: 'https://turalengineer.com',
   output: 'static',
+
   integrations: [
     mdx(),
     tailwind({
@@ -24,9 +27,12 @@ export default defineConfig({
     }),
     react()
   ],
+
   markdown: {
     shikiConfig: {
       theme: 'github-dark'
     }
-  }
+  },
+
+  adapter: cloudflare()
 });
