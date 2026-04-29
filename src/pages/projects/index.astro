@@ -3,8 +3,42 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '@layouts/BaseLayout.astro';
 import ProjectCard from '@components/ProjectCard.astro';
 import SectionHeading from '@components/SectionHeading.astro';
+import { sanityFetch } from '@lib/sanity';
 
-const projects = await getCollection('projects');
+type SanityProjectListItem = {
+  _id: string;
+  title: string;
+  slug: string;
+  location?: string;
+  problem?: string;
+  services?: string[];
+};
+
+const sanityProjects = await sanityFetch<SanityProjectListItem[]>(
+  `*[_type == "projectCase" && defined(slug.current)] | order(_createdAt desc) {
+    _id,
+    title,
+    "slug": slug.current,
+    location,
+    problem,
+    services
+  }`
+);
+
+const fallbackProjects = await getCollection('projects');
+
+const projects =
+  sanityProjects.length > 0
+    ? sanityProjects.map((project) => ({
+        slug: project.slug,
+        data: {
+          title: project.title,
+          description: project.problem ?? '',
+          location: project.location ?? '',
+          scope: project.services?.join(', ') ?? ''
+        }
+      }))
+    : fallbackProjects;
 ---
 
 <BaseLayout

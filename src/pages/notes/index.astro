@@ -2,8 +2,21 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '@layouts/BaseLayout.astro';
 import SectionHeading from '@components/SectionHeading.astro';
+import { sanity } from '@lib/sanity';
+import { blogQuery } from '@lib/queries';
 
-const posts = (await getCollection('blog'))
+type SanityNoteListItem = {
+  _id: string;
+  title: string;
+  slug: string;
+  description?: string;
+  publishDate?: string;
+  mainImage?: unknown;
+};
+
+const sanityPosts = await sanity.fetch<SanityNoteListItem[]>(blogQuery);
+
+const fallbackPosts = (await getCollection('blog'))
   .map((post) => ({
     ...post,
     data: {
@@ -12,6 +25,20 @@ const posts = (await getCollection('blog'))
     }
   }))
   .sort((a, b) => b.data._publishedAt.valueOf() - a.data._publishedAt.valueOf());
+
+const posts =
+  sanityPosts.length > 0
+    ? sanityPosts.map((post) => ({
+        slug: post.slug,
+        data: {
+          title: post.title,
+          description: post.description ?? '',
+          category: undefined as string | undefined,
+          tags: [] as string[],
+          _publishedAt: post.publishDate ? new Date(post.publishDate) : new Date()
+        }
+      }))
+    : fallbackPosts;
 ---
 
 <BaseLayout

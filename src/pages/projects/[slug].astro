@@ -1,43 +1,99 @@
 ---
 import { getCollection, render } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
 import BaseLayout from '@layouts/BaseLayout.astro';
+import { sanityFetch } from '@lib/sanity';
 
 export async function getStaticPaths() {
   const projects = await getCollection('projects');
-  return projects.map((project) => ({
-    params: { slug: project.slug },
-    props: { project }
+  const sanitySlugs = await sanityFetch<{ slug: string }[]>(
+    `*[_type == "projectCase" && defined(slug.current)]{
+      "slug": slug.current
+    }`
+  );
+
+  const bySlug = new Map<string, { slug: string; project?: (typeof projects)[number] }>();
+
+  for (const project of projects) bySlug.set(project.slug, { slug: project.slug, project });
+  for (const { slug } of sanitySlugs) bySlug.set(slug, { slug });
+
+  return [...bySlug.values()].map((entry) => ({
+    params: { slug: entry.slug },
+    props: { project: entry.project ?? null }
   }));
 }
 
-const { project } = Astro.props;
-const { Content } = await render(project);
+type SanityProjectCase = {
+  title: string;
+  slug: string;
+  location?: string;
+  problem?: string;
+  analysis?: string;
+  solution?: string;
+  services?: string[];
+};
+
+const { project } = Astro.props as { project: CollectionEntry<'projects'> | null };
+const slug = Astro.params.slug as string;
+
+const sanityProject = await sanityFetch<SanityProjectCase | null>(
+  `*[_type == "projectCase" && slug.current == $slug][0]{
+    title,
+    "slug": slug.current,
+    location,
+    problem,
+    analysis,
+    solution,
+    services
+  }`,
+  { slug }
+);
+
+const title = sanityProject?.title ?? project?.data.title ?? 'Project';
+const description = sanityProject?.problem ?? project?.data.description ?? '';
+const location = sanityProject?.location ?? project?.data.location ?? '';
+const scope = sanityProject?.services?.join(', ') ?? project?.data.scope ?? '';
+const challenge = sanityProject?.problem ?? project?.data.challenge ?? '';
+const solution = sanityProject?.solution ?? project?.data.solution ?? '';
+
+const FallbackContent = project ? (await render(project)).Content : null;
 ---
 
-<BaseLayout title={project.data.title} description={project.data.description}>
+<BaseLayout title={title} description={description}>
   <article class="section bg-white">
     <div class="container max-w-4xl">
-      <p class="eyebrow">{project.data.location}</p>
+      <p class="eyebrow">{location}</p>
       <div class="prose-engineering mt-4">
-        <h1>{project.data.title}</h1>
-        <p>{project.data.description}</p>
+        <h1>{title}</h1>
+        <p>{description}</p>
       </div>
       <dl class="mt-10 grid gap-4 md:grid-cols-3">
         <div class="rounded-2xl bg-mist p-5">
           <dt class="text-xs font-bold uppercase tracking-widest text-accent">Scope</dt>
-          <dd class="mt-2 text-sm font-semibold leading-6 text-ink">{project.data.scope}</dd>
+          <dd class="mt-2 text-sm font-semibold leading-6 text-ink">{scope}</dd>
         </div>
         <div class="rounded-2xl bg-mist p-5">
           <dt class="text-xs font-bold uppercase tracking-widest text-accent">Challenge</dt>
-          <dd class="mt-2 text-sm font-semibold leading-6 text-ink">{project.data.challenge}</dd>
+          <dd class="mt-2 text-sm font-semibold leading-6 text-ink">{challenge}</dd>
         </div>
         <div class="rounded-2xl bg-mist p-5">
           <dt class="text-xs font-bold uppercase tracking-widest text-accent">Solution</dt>
-          <dd class="mt-2 text-sm font-semibold leading-6 text-ink">{project.data.solution}</dd>
+          <dd class="mt-2 text-sm font-semibold leading-6 text-ink">{solution}</dd>
         </div>
       </dl>
       <div class="prose-engineering mt-12">
-        <Content />
+        {sanityProject ? (
+          <>
+            {sanityProject.analysis ? (
+              <>
+                <h2>Analysis</h2>
+                <p>{sanityProject.analysis}</p>
+              </>
+            ) : null}
+          </>
+        ) : FallbackContent ? (
+          <FallbackContent />
+        ) : null}
       </div>
     </div>
   </article>

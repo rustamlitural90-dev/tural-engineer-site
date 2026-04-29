@@ -1,29 +1,75 @@
 ---
 import { getCollection, render } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
 import BaseLayout from '@layouts/BaseLayout.astro';
+import { PortableText } from 'astro-portabletext';
+import { sanityFetch } from '@lib/sanity';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
-  return posts.map((post) => ({
-    params: { slug: post.slug },
-    props: { post }
+  const sanitySlugs = await sanityFetch<{ slug: string }[]>(
+    `*[_type == "blogPost" && defined(slug.current) && defined(publishDate) && publishDate <= now()]{
+      "slug": slug.current
+    }`
+  );
+
+  const bySlug = new Map<string, { slug: string; post?: (typeof posts)[number] }>();
+
+  for (const post of posts) bySlug.set(post.slug, { slug: post.slug, post });
+  for (const { slug } of sanitySlugs) bySlug.set(slug, { slug });
+
+  return [...bySlug.values()].map((entry) => ({
+    params: { slug: entry.slug },
+    props: { post: entry.post ?? null }
   }));
 }
 
-const { post } = Astro.props;
-const publishedAt = (post.data.publishDate ?? post.data.date) as Date;
-const { Content } = await render(post);
+type SanityBlogPost = {
+  title: string;
+  slug: string;
+  description?: string;
+  publishDate?: string;
+  body?: unknown;
+  seoTitle?: string;
+  seoDescription?: string;
+};
+
+const { post } = Astro.props as { post: CollectionEntry<'blog'> | null };
+const slug = Astro.params.slug as string;
+
+const sanityPost = await sanityFetch<SanityBlogPost | null>(
+  `*[_type == "blogPost" && slug.current == $slug && defined(publishDate) && publishDate <= now()][0]{
+    title,
+    "slug": slug.current,
+    description,
+    publishDate,
+    body,
+    seoTitle,
+    seoDescription
+  }`,
+  { slug }
+);
+
+const title = sanityPost?.seoTitle ?? sanityPost?.title ?? post?.data.title ?? 'Post';
+const description = sanityPost?.seoDescription ?? sanityPost?.description ?? post?.data.description ?? '';
+const publishedAt = sanityPost?.publishDate
+  ? new Date(sanityPost.publishDate)
+  : ((post?.data.publishDate ?? post?.data.date) as Date | undefined);
+
+const FallbackContent = post ? (await render(post)).Content : null;
 ---
 
-<BaseLayout title={post.data.title} description={post.data.description} ogType="article">
+<BaseLayout title={title} description={description} ogType="article">
   <article class="section bg-white">
     <div class="container max-w-4xl">
       <p class="eyebrow">Engineering Notes</p>
-      <p class="mt-6 text-sm font-semibold text-slate-500">
-        Published {publishedAt.toLocaleDateString('en', { month: 'long', day: 'numeric', year: 'numeric' })}
-      </p>
+      {publishedAt && (
+        <p class="mt-6 text-sm font-semibold text-slate-500">
+          Published {publishedAt.toLocaleDateString('en', { month: 'long', day: 'numeric', year: 'numeric' })}
+        </p>
+      )}
       <div class="prose-engineering mt-8">
-        <Content />
+        {sanityPost?.body ? <PortableText value={sanityPost.body as any} /> : FallbackContent ? <FallbackContent /> : null}
       </div>
     </div>
   </article>
