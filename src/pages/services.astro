@@ -1,0 +1,66 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import SectionHeading from '@components/SectionHeading.astro';
+import ServiceCard from '@components/ServiceCard.astro';
+
+const services = [
+  {
+    title: 'Structural design',
+    description: 'Structural calculations and design verification for steel and reinforced concrete systems, with emphasis on load paths, buildability, and clear assumptions.'
+  },
+  {
+    title: 'Geotechnical engineering',
+    description: 'Ground investigation interpretation, parameter selection, foundation options, and geotechnical risk assessment aligned to the project’s decision points.'
+  },
+  {
+    title: 'PLAXIS modeling',
+    description: '2D/3D finite element modeling for staged construction, excavations, retaining systems, and soil-structure interaction—supported by QA and sensitivity checks.'
+  },
+  {
+    title: 'Slope stability analysis',
+    description: 'Limit equilibrium and FEM checks for natural slopes, embankments, temporary cuts, and remediation concepts, with sensitivity to groundwater and strength assumptions.'
+  },
+  {
+    title: 'Retaining walls',
+    description: 'Gravity, cantilever, sheet pile, secant pile, anchored, and propped retaining wall analysis—explicit staging, groundwater, deformation, and stability checks.'
+  },
+  {
+    title: 'Marine structures',
+    description: 'Quay walls, waterfront retaining systems, pile-supported platforms, and durability/scour considerations—coordinated with construction constraints and inspection realities.'
+  },
+  {
+    title: 'Tunnels',
+    description: 'Ground response, lining interaction, settlement assessment, portal stability, and staged excavation support—focused on movement control and risk.'
+  }
+];
+---
+
+<BaseLayout
+  title="Services"
+  description="Structural design, geotechnical engineering, PLAXIS modeling, slope stability analysis, retaining walls, marine structures, and tunnel engineering services."
+>
+  <section class="section bg-white">
+    <div class="container">
+      <SectionHeading
+        eyebrow="Services"
+        title="Engineering support for demanding ground and structural problems."
+        description="Specialist support delivered as targeted reviews, calculation packages, model development, and design verification—built around the decision your project needs to make."
+      />
+      <div class="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+        {services.map((service) => <ServiceCard {...service} />)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-ink text-white">
+    <div class="container grid gap-8 md:grid-cols-[1fr_1fr] md:items-center">
+      <div>
+        <p class="eyebrow text-cyan">Delivery</p>
+        <h2 class="mt-3 text-4xl font-extrabold leading-tight tracking-normal md:text-5xl">Clear scope. Clear assumptions. Clear decisions.</h2>
+      </div>
+      <p class="text-lg leading-8 text-white/66">
+        Each engagement is structured around the decision the project needs to make: feasibility, optimization, peer review, construction risk, or final design verification.
+      </p>
+    </div>
+  </section>
+</BaseLayout>

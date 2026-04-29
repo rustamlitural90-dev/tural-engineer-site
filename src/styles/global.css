@@ -1,0 +1,144 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+  --accent: #0757c8;
+  --ink: #07111f;
+  --muted: #5d6b7d;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: #ffffff;
+  color: var(--ink);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img,
+svg {
+  max-width: 100%;
+}
+
+::selection {
+  background: rgba(7, 87, 200, 0.18);
+}
+
+.container {
+  width: min(1120px, calc(100% - 32px));
+  margin-inline: auto;
+}
+
+.section {
+  padding: 92px 0;
+}
+
+.eyebrow {
+  color: var(--accent);
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.prose-engineering {
+  color: #263244;
+  font-size: 1.075rem;
+  line-height: 1.78;
+}
+
+.prose-engineering h1,
+.prose-engineering h2,
+.prose-engineering h3 {
+  color: var(--ink);
+  line-height: 1.14;
+}
+
+.prose-engineering h1 {
+  margin: 0 0 1rem;
+  font-size: clamp(2.25rem, 5vw, 4rem);
+  letter-spacing: 0;
+}
+
+.prose-engineering h2 {
+  margin: 2.5rem 0 0.85rem;
+  font-size: clamp(1.55rem, 3vw, 2.15rem);
+}
+
+.prose-engineering h3 {
+  margin: 2rem 0 0.7rem;
+  font-size: 1.25rem;
+}
+
+.prose-engineering p,
+.prose-engineering ul,
+.prose-engineering ol {
+  margin: 0 0 1.25rem;
+}
+
+.prose-engineering ul,
+.prose-engineering ol {
+  padding-left: 1.35rem;
+}
+
+.prose-engineering li + li {
+  margin-top: 0.45rem;
+}
+
+.prose-engineering strong {
+  color: #0c1728;
+}
+
+.prose-engineering a {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.prose-engineering mark {
+  background: rgba(7, 87, 200, 0.12);
+  color: inherit;
+  padding: 0.08em 0.22em;
+  border-radius: 0.35em;
+}
+
+.prose-engineering hr {
+  border: 0;
+  border-top: 1px solid rgba(17, 24, 39, 0.12);
+  margin: 2.5rem 0;
+}
+
+.engineering-grid {
+  background-image:
+    linear-gradient(rgba(7, 87, 200, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(7, 87, 200, 0.08) 1px, transparent 1px);
+  background-size: 34px 34px;
+}
+
+.contour-lines {
+  background:
+    radial-gradient(ellipse at 15% 25%, rgba(45, 212, 191, 0.2), transparent 26%),
+    radial-gradient(ellipse at 85% 20%, rgba(7, 87, 200, 0.18), transparent 28%),
+    radial-gradient(ellipse at 45% 82%, rgba(7, 17, 31, 0.08), transparent 34%);
+}
+
+@media (max-width: 720px) {
+  .section {
+    padding: 64px 0;
+  }
+}

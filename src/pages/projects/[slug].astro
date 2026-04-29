@@ -1,0 +1,44 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '@layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+  return projects.map((project) => ({
+    params: { slug: project.slug },
+    props: { project }
+  }));
+}
+
+const { project } = Astro.props;
+const { Content } = await render(project);
+---
+
+<BaseLayout title={project.data.title} description={project.data.description}>
+  <article class="section bg-white">
+    <div class="container max-w-4xl">
+      <p class="eyebrow">{project.data.location}</p>
+      <div class="prose-engineering mt-4">
+        <h1>{project.data.title}</h1>
+        <p>{project.data.description}</p>
+      </div>
+      <dl class="mt-10 grid gap-4 md:grid-cols-3">
+        <div class="rounded-2xl bg-mist p-5">
+          <dt class="text-xs font-bold uppercase tracking-widest text-accent">Scope</dt>
+          <dd class="mt-2 text-sm font-semibold leading-6 text-ink">{project.data.scope}</dd>
+        </div>
+        <div class="rounded-2xl bg-mist p-5">
+          <dt class="text-xs font-bold uppercase tracking-widest text-accent">Challenge</dt>
+          <dd class="mt-2 text-sm font-semibold leading-6 text-ink">{project.data.challenge}</dd>
+        </div>
+        <div class="rounded-2xl bg-mist p-5">
+          <dt class="text-xs font-bold uppercase tracking-widest text-accent">Solution</dt>
+          <dd class="mt-2 text-sm font-semibold leading-6 text-ink">{project.data.solution}</dd>
+        </div>
+      </dl>
+      <div class="prose-engineering mt-12">
+        <Content />
+      </div>
+    </div>
+  </article>
+</BaseLayout>

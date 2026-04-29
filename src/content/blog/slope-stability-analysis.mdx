@@ -1,0 +1,80 @@
+---
+title: "Slope stability analysis: a decision-grade workflow"
+description: "A practical, engineer-to-engineer checklist for building defensible slope stability assessments—inputs, assumptions, sensitivity, and how to communicate outcomes."
+date: 2026-04-25
+category: Slope stability
+tags: [slope stability, limit equilibrium, FEM, groundwater, sensitivity]
+---
+
+Slope stability is rarely “a factor of safety problem.” It is a **decision problem** under uncertainty: variable stratigraphy, partial groundwater understanding, construction sequencing, and consequences of movement.
+
+This note outlines a workflow that keeps the modelling honest and the outputs useful for design and construction teams.
+
+---
+
+## 1) Start with the decision, not the model
+
+Before opening software, define:
+
+- What decision must be made (e.g., cut slope angle, need for nails/anchors, staged excavation approach).
+- What constitutes “acceptable” performance (serviceability movements vs. ultimate failure).
+- The **critical scenario**: long-term drained, short-term undrained, rapid drawdown, seismic, or construction stage.
+
+If you need support framing scope and acceptance criteria, see [services](/services/).
+
+## 2) Build a ground model you can defend
+
+The ground model should be a concise statement of **geometry + strata + groundwater + material behaviour**.
+
+Key checks that typically change outcomes:
+
+- **Groundwater**: perched water, artesian pressures, seasonal variation, drainage assumptions.
+- **Stratigraphic continuity**: lensing layers and weak seams that control slip surfaces.
+- Strength selection: characteristic vs. cautious mean; peak vs. residual where relevant.
+
+In communication, highlight the specific parameters that dominate uncertainty (e.g., \(c'\), \(\phi'\), \(s_u\), \(k\)).
+
+## 3) Choose the analysis approach deliberately
+
+Use the simplest method that answers the decision with adequate reliability.
+
+- **Limit equilibrium**: fast, transparent, ideal for sensitivity and design iteration.
+- **Finite element (e.g., PLAXIS)**: staged construction, stress-path effects, deformation, support interaction.
+
+Treat FEM as an extension of the ground model—not a replacement for engineering judgement. A good path is: LEM for bounding + FEM for staging/deformation.
+
+For FEM setup guidance, see [PLAXIS modelling guide](/notes/plaxis-modeling-guide/).
+
+## 4) Sensitivity is not optional
+
+Run a small set of targeted variations that align with actual uncertainty:
+
+- groundwater level/pressures
+- shear strength bounds (including residual where appropriate)
+- unit weight / saturation assumptions
+- geometry tolerances and temporary stages
+
+Report results as **ranges** and identify “what needs to be true” for stability.
+
+## 5) Make outputs buildable
+
+Contractors and designers need actionable constraints:
+
+- allowed temporary cut heights/angles by stage
+- required dewatering trigger levels
+- monitoring approach and stop-work thresholds
+- stabilisation options and their dependencies (access, sequencing, environment)
+
+If you want examples of concise deliverables, see [projects](/projects/).
+
+## 6) How to write the conclusion
+
+Avoid single-point statements like “FoS = 1.35 therefore stable.” Prefer:
+
+- the governing scenario and why it governs
+- the controlling assumptions (especially groundwater)
+- sensitivity outcomes and recommended controls
+- the residual risks and how they’re managed
+
+If you need a peer review of an existing assessment, reach out via [contact](/contact/).
+

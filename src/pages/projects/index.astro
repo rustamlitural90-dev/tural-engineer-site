@@ -1,0 +1,34 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '@layouts/BaseLayout.astro';
+import ProjectCard from '@components/ProjectCard.astro';
+import SectionHeading from '@components/SectionHeading.astro';
+
+const projects = await getCollection('projects');
+---
+
+<BaseLayout
+  title="Projects"
+  description="Structural and geotechnical engineering project examples covering slope stability, retaining systems, marine works, tunnels, and PLAXIS modeling."
+>
+  <section class="section bg-white">
+    <div class="container">
+      <SectionHeading
+        eyebrow="Projects"
+        title="Selected engineering case studies."
+        description="Example cases demonstrate the documentation style, technical scope, and practical recommendations used in project delivery."
+      />
+      <div class="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+        {projects.map((project) => (
+          <ProjectCard
+            title={project.data.title}
+            description={project.data.description}
+            location={project.data.location}
+            scope={project.data.scope}
+            href={`/projects/${project.slug}/`}
+          />
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,36 @@
+---
+const year = new Date().getFullYear();
+---
+
+<footer class="border-t border-slate-900/10 bg-ink text-white">
+  <div class="container grid gap-10 py-14 md:grid-cols-[1.4fr_1fr_1fr]">
+    <div>
+      <a href="/" class="text-xl font-extrabold">Tural Rustamli</a>
+      <p class="mt-4 max-w-md text-sm leading-7 text-white/62">
+        Structural and geotechnical engineering for demanding infrastructure, marine, retaining, tunnel, and slope stability projects.
+      </p>
+    </div>
+    <div>
+      <h2 class="text-sm font-bold uppercase tracking-widest text-white/42">Navigation</h2>
+      <ul class="mt-4 space-y-3 text-sm text-white/70">
+        <li><a class="hover:text-white" href="/services/">Services</a></li>
+        <li><a class="hover:text-white" href="/projects/">Projects</a></li>
+        <li><a class="hover:text-white" href="/blog/">Engineering Notes</a></li>
+      </ul>
+    </div>
+    <div>
+      <h2 class="text-sm font-bold uppercase tracking-widest text-white/42">Contact</h2>
+      <p class="mt-4 text-sm leading-7 text-white/70">
+        Available for engineering consulting, peer review, and specialist modeling.
+      </p>
+      <a class="mt-4 inline-flex text-sm font-bold text-cyan" href="mailto:contact@turalengineer.com">
+        mail@turalengineer.com
+      </a>
+    </div>
+  </div>
+  <div class="border-t border-white/10 py-6">
+    <div class="container flex flex-col gap-2 text-xs text-white/46 sm:flex-row sm:items-center sm:justify-between">
+      <p>&copy; {year} Tural Rustamli. All rights reserved.</p>
+    </div>
+  </div>
+</footer>

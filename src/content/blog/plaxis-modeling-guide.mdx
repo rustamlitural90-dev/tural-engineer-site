@@ -1,0 +1,88 @@
+---
+title: "PLAXIS modeling guide: getting to defensible results"
+description: "A practical setup checklist for PLAXIS 2D/3D—staging, groundwater, boundaries, constitutive models, and the QA steps that keep results credible."
+date: 2026-04-25
+category: PLAXIS modeling
+tags: [plaxis, FEM, staged construction, soil-structure interaction, QA]
+---
+
+PLAXIS is powerful, but it is also unforgiving: small setup decisions can dominate the response. The goal is not a “pretty plot” — it’s a model you can explain, check, and use to make engineering decisions.
+
+This guide focuses on the steps that most often separate **defensible** models from fragile ones.
+
+---
+
+## 1) Define the question and the critical stage
+
+Write down the primary output you need:
+
+- deformations (e.g., wall top deflection, settlement trough)
+- internal forces in structural elements
+- excess pore pressures / stability margins
+- construction stage constraints
+
+If the question is “Is this slope stable?” start with a slope-focused workflow first: [slope stability analysis](/notes/slope-stability-analysis/).
+
+## 2) Geometry, boundaries, and mesh: avoid artificial stiffness
+
+Common failure modes:
+
+- boundaries too close to the zone of influence
+- mesh too coarse around interfaces and structural elements
+- overly stiff boundary conditions causing non-physical restraint
+
+Rules of thumb:
+
+- keep boundaries far enough that displacement contours decay naturally
+- refine around excavations, walls, anchors/props, and stratigraphic changes
+- check mesh sensitivity for the output you care about (not for aesthetics)
+
+## 3) Groundwater is a first-order driver
+
+Model groundwater explicitly and test:
+
+- baseline piezometric surface
+- perched / artesian conditions where relevant
+- dewatering assumptions (drawdown time, permeability uncertainty)
+
+In many excavations, the “stability issue” is actually a **pore pressure assumption issue**.
+
+## 4) Constitutive model selection: match the mechanism
+
+Start conservative and only add complexity when it changes a decision:
+
+- Mohr-Coulomb: transparent, robust, good for bounding
+- Hardening Soil: stress-dependent stiffness and more realistic deformation
+- HSsmall: small-strain stiffness for serviceability-sensitive problems
+
+Always record which parameters are measured vs. inferred, and where correlations were used.
+
+## 5) Staged construction: treat sequencing as part of the model
+
+For excavations and retaining systems, the stage definition *is* the physics:
+
+- activate/deactivate soil and structural elements explicitly
+- apply loads when they occur (not “at the end”)
+- model struts/anchors with realistic activation timing and pre-stress where relevant
+
+## 6) QA checklist before you trust results
+
+At minimum:
+
+- equilibrium/convergence across stages
+- interface behaviour (no unrealistic tension transfer)
+- stress and pore pressure plausibility checks
+- bounding comparison with simplified hand checks / LEM where applicable
+
+If the model is influencing design decisions, a short peer review can save significant downstream risk. See [services](/services/).
+
+## 7) Communicate results like an engineer
+
+Prefer:
+
+- a single governing deformation/force metric per stage
+- a sensitivity bracket (key parameters and groundwater)
+- clear plots with consistent scales and stage labels
+
+If you want examples of concise output packages, see [projects](/projects/) or get in touch via [contact](/contact/).
+

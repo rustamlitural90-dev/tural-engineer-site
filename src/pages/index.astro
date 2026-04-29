@@ -1,0 +1,130 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '@layouts/BaseLayout.astro';
+import EngineeringVisual from '@components/EngineeringVisual.astro';
+import ProjectCard from '@components/ProjectCard.astro';
+import SectionHeading from '@components/SectionHeading.astro';
+import ServiceCard from '@components/ServiceCard.astro';
+
+const services = [
+  {
+    title: 'Structural design',
+    description: 'Concept-to-delivery support for concrete and steel systems: load paths, member sizing, connection intent, foundation coordination, and buildable details.'
+  },
+  {
+    title: 'Geotechnical engineering',
+    description: 'Ground model interpretation, parameter selection, foundation strategy, soil-structure interaction, and risk-focused geotechnical review.'
+  },
+  {
+    title: 'PLAXIS modeling',
+    description: 'Decision-grade FEM for staged construction, excavations, retaining systems, and deformation-driven checks with clear QA and sensitivity.'
+  }
+];
+
+const featuredProjects = (await getCollection('projects'))
+  .filter((project) => project.data.featured)
+  .slice(0, 3);
+---
+
+<BaseLayout
+  title="Structural & Geotechnical Engineer"
+  description="Tural Rustamli provides structural and geotechnical engineering for slopes, retaining walls, marine structures, tunnels, PLAXIS modeling, and complex infrastructure."
+>
+  <section class="relative overflow-hidden bg-white">
+    <div class="absolute inset-0 -z-10 engineering-grid opacity-70"></div>
+    <div class="container grid min-h-[calc(100vh-80px)] items-center gap-12 py-16 lg:grid-cols-[1fr_0.9fr]">
+      <div>
+        <p class="eyebrow">Structural and geotechnical engineering</p>
+        <h1 class="mt-5 max-w-4xl text-5xl font-extrabold leading-[1.02] tracking-normal text-ink md:text-7xl">
+          Engineering clarity for complex ground–structure interaction.
+        </h1>
+        <p class="mt-7 max-w-2xl text-xl leading-9 text-slate-600">
+          I support project teams with structural verification, geotechnical assessment, and finite element modeling—turning uncertain ground conditions into defensible assumptions, checks, and buildable recommendations.
+        </p>
+        <div class="mt-10 flex flex-col gap-4 sm:flex-row">
+          <a class="rounded-full bg-accent px-7 py-4 text-center text-sm font-extrabold text-white transition hover:bg-ink" href="/contact/">
+            Start a technical review
+          </a>
+          <a class="rounded-full border border-slate-900/14 px-7 py-4 text-center text-sm font-extrabold text-ink transition hover:border-accent hover:text-accent" href="/projects/">
+            View project cases
+          </a>
+        </div>
+      </div>
+      <EngineeringVisual />
+    </div>
+  </section>
+
+  <section class="section bg-mist">
+    <div class="container">
+      <SectionHeading
+        eyebrow="Services"
+        title="Specialist engineering without unnecessary weight."
+        description="Focused support for design teams, developers, contractors, and infrastructure owners who need sound calculations, modeling, and buildable recommendations."
+      />
+      <div class="mt-12 grid gap-5 md:grid-cols-3">
+        {services.map((service) => <ServiceCard {...service} />)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-ink text-white">
+    <div class="container grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
+      <div>
+        <p class="eyebrow text-cyan">Engineering expertise</p>
+        <h2 class="mt-3 text-4xl font-extrabold leading-tight tracking-normal md:text-5xl">
+          From soil parameters to structural demand paths.
+        </h2>
+        <p class="mt-6 text-lg leading-8 text-white/66">
+          Strong designs depend on clear load paths, defensible ground models, and honest interpretation of uncertainty. The workflow combines calculation, FEM, code checks, and constructability review.
+        </p>
+      </div>
+      <div class="grid gap-4 sm:grid-cols-2">
+        {['Slope stability', 'Retaining systems', 'Marine structures', 'Tunnels', 'Excavations', 'Foundation strategy'].map((item) => (
+          <div class="rounded-2xl border border-white/10 bg-white/[0.07] p-5">
+            <p class="text-lg font-extrabold">{item}</p>
+            <p class="mt-2 text-sm leading-6 text-white/56">Analysis and design support with clear assumptions, outputs, and recommendations.</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-white">
+    <div class="container">
+      <div class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+        <SectionHeading
+          eyebrow="Featured projects"
+          title="Applied engineering case work."
+          description="Example project summaries showing the level of technical thinking and communication expected from each engagement."
+        />
+        <a class="text-sm font-extrabold text-accent" href="/projects/">All projects</a>
+      </div>
+      <div class="mt-12 grid gap-5 md:grid-cols-3">
+        {featuredProjects.map((project) => (
+          <ProjectCard
+            title={project.data.title}
+            description={project.data.description}
+            location={project.data.location}
+            scope={project.data.scope}
+            href={`/projects/${project.slug}/`}
+          />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-mist">
+    <div class="container rounded-[28px] bg-ink px-6 py-14 text-center text-white md:px-14">
+      <p class="eyebrow text-cyan">Contact</p>
+      <h2 class="mx-auto mt-3 max-w-3xl text-4xl font-extrabold leading-tight tracking-normal md:text-5xl">
+        Need a second set of engineering eyes?
+      </h2>
+      <p class="mx-auto mt-5 max-w-2xl text-lg leading-8 text-white/66">
+        Send drawings, ground data, model questions, or a short project brief. I will help turn the technical uncertainty into an actionable route forward.
+      </p>
+      <a class="mt-9 inline-flex rounded-full bg-white px-7 py-4 text-sm font-extrabold text-ink transition hover:bg-cyan" href="/contact/">
+        Contact Tural
+      </a>
+    </div>
+  </section>
+</BaseLayout>

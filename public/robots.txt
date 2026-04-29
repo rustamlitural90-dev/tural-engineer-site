@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://turalengineer.com/sitemap-index.xml

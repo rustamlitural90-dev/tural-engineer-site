@@ -1,0 +1,27 @@
+---
+const nav = [
+  { href: '/', label: 'Home' },
+  { href: '/about/', label: 'About' },
+  { href: '/services/', label: 'Services' },
+  { href: '/projects/', label: 'Projects' },
+  { href: '/notes/', label: 'Notes' },
+  { href: '/contact/', label: 'Contact' }
+];
+---
+
+<header class="sticky top-0 z-50 border-b border-slate-900/10 bg-white/86 backdrop-blur-xl">
+  <div class="container flex h-20 items-center justify-between gap-6">
+    <a href="/" class="flex items-center gap-3 font-extrabold tracking-tight" aria-label="Tural Rustamli home">
+      <span class="grid h-10 w-10 place-items-center rounded-xl bg-ink text-sm text-white">TR</span>
+      <span class="hidden sm:block">Tural Rustamli</span>
+    </a>
+    <nav class="hidden items-center gap-7 text-sm font-semibold text-slate-700 md:flex" aria-label="Primary navigation">
+      {nav.map((item) => (
+        <a class="transition hover:text-accent" href={item.href}>{item.label}</a>
+      ))}
+    </nav>
+    <a class="rounded-full bg-accent px-5 py-3 text-sm font-bold text-white transition hover:bg-ink" href="/contact/">
+      Discuss a project
+    </a>
+  </div>
+</header>
